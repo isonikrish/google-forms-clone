@@ -1,15 +1,33 @@
 import { useState } from "react";
 import { setIsLoginType } from "../store/types";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAuth } from "../store/useAuth";
 function Login({ setIsLogin }: setIsLoginType) {
   const [isPasswordShow, setIsPasswordShow] = useState<boolean>(false);
+  const {login} = useAuth()
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    login(formData)
+  }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <h1 className="text-2xl font-semibold text-center text-gray-800">
           Login
         </h1>
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <label
               htmlFor="email"
@@ -23,6 +41,9 @@ function Login({ setIsLogin }: setIsLoginType) {
               placeholder="Enter your email"
               className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
               required
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
             />
           </div>
 
@@ -36,10 +57,13 @@ function Login({ setIsLogin }: setIsLoginType) {
             <div className="relative">
               <input
                 id="password"
-                type={isPasswordShow ? "text" : "password"} 
+                type={isPasswordShow ? "text" : "password"}
                 placeholder="Enter your password"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none"
                 required
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
               />
               <div
                 className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600 select-none"

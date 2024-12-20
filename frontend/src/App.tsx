@@ -6,7 +6,14 @@ import Forms from "./pages/Forms";
 import EditFormDisplay from "./pages/EditFormDisplay";
 import Profile from "./pages/Profile";
 import { Toaster } from "react-hot-toast";
+import { useAuth } from "./store/useAuth";
+import { useEffect } from "react";
 function App() {
+  const {fetchMe} = useAuth()
+  useEffect(()=>{
+    fetchMe();
+  },[])
+
   return (
     <div>
       <Navbar />

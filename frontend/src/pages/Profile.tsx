@@ -3,8 +3,10 @@ import {
   FaEnvelope,
   FaCalendarAlt,
 } from "react-icons/fa";
+import { useAuth } from "../store/useAuth";
 
 function Profile() {
+  const {user} = useAuth()
   return (
     <div className="pt-20 bg-gray-100 min-h-screen">
       <div className="max-w-2xl mx-auto p-4 py-8">
@@ -23,7 +25,7 @@ function Profile() {
               </div>
               <input
                 type="text"
-                value="John Doe"
+                value={user?.username}
                 disabled
                 className="px-4 py-2 bg-gray-100 rounded-lg border text-gray-600 w-full"
                 readOnly
@@ -37,7 +39,7 @@ function Profile() {
               </div>
               <input
                 type="text"
-                value="johndoe@example.com"
+                value={user?.email}
                 disabled
                 className="px-4 py-2 bg-gray-100 rounded-lg border text-gray-600 w-full"
                 readOnly
@@ -45,7 +47,7 @@ function Profile() {
             </div>
           </div>
 
-          <div className="mt-6 bg-gray-50 rounded-xl p-6 shadow-inner">
+          {/* <div className="mt-6 bg-gray-50 rounded-xl p-6 shadow-inner">
             <h2 className="text-lg font-medium mb-4">Account Information</h2>
             <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between py-2 border-b border-gray-200">
@@ -56,7 +58,7 @@ function Profile() {
                 <span>2023-01-01</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

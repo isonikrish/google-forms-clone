@@ -1,16 +1,24 @@
 import logo from "/formsLogo.png";
 import { FaUser } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../store/useAuth";
 
 function Navbar() {
+  const {logout, fetchMe} = useAuth()
+  const navigate = useNavigate()
+  function handleLogout(){
+    logout()
+    navigate("/")
+    fetchMe()
+  }
   return (
     <div>
       <div className="navbar bg-base-100 shadow-md px-10">
         <div className="flex-1">
           <Link to={"/forms"} className="flex items-center">
             <img src={logo} alt="logo" className="w-10" />
-            <a className="text-black text-xl font-normal">Forms</a>
+            <p className="text-black text-xl font-normal">Forms</p>
           </Link>
         </div>
 
@@ -56,7 +64,7 @@ function Navbar() {
                 </Link>
               </li>
               <li>
-                <a>
+                <a onClick={handleLogout}>
                   <IoLogOutOutline />
                   Logout
                 </a>
