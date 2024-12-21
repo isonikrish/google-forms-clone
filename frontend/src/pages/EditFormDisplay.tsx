@@ -7,13 +7,7 @@ function FormDisplay() {
   return (
     <div className="pt-8">
       <div className="flex items-center justify-between px-10">
-        <div className="flex items-center space-x-4">
-          <input
-            type="text"
-            placeholder="Untitled Form"
-            className="input input-bordered w-72"
-          />
-        </div>
+        
 
         <div className="flex space-x-4">
           <button>

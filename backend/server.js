@@ -4,7 +4,7 @@ dotenv.config()
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import authRoutes from './routes/auth.js'
-
+import formRoutes from './routes/form.js'
 
 
 const app = express();
@@ -15,6 +15,7 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser());
 app.use('/api/user', authRoutes);
+app.use('/api/form', formRoutes);
 
 
 

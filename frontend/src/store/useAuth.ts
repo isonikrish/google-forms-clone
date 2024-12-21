@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { loggedUser, userLoginData, userSignupData } from "./types.ts";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { AxiosResponse } from "axios";
 
 interface AuthState {
   user: loggedUser | null;
@@ -9,6 +10,7 @@ interface AuthState {
   login: (data: userLoginData) => void;
   logout: () => void;
   fetchMe: ()=> void;
+  createForm: (title: string) => Promise<AxiosResponse<any> | undefined>;
 }
 
 export const useAuth = create<AuthState>((set, get) => ({
@@ -78,5 +80,14 @@ export const useAuth = create<AuthState>((set, get) => ({
       toast.error("Error in Log out");
     }
   },
-  
+  createForm: async(title) =>{
+    try {
+      const res = await axios.post("http://localhost:9294/api/form/create",{title}, {
+        withCredentials: true,
+      });
+      return res;
+    } catch (error) {
+      console.error("Error in Log in");
+    }
+  }
 }));

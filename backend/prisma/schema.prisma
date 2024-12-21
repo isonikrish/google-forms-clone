@@ -13,12 +13,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  username String
-  email String @unique
-  password String
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String
+  email     String    @unique
+  password  String
+  forms     Form[]
+  responses Response[]
 }
+
+model Form {
+  id         Int        @id @default(autoincrement())
+  title      String
+  userId     Int
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions  Question[]
+  responses  Response[]
+  status     FormStatus @default(UNPUBLISHED) 
+}
+
+model Question {
+  id        Int    @id @default(autoincrement())
+  question  String
+  formId    Int
+  form      Form   @relation(fields: [formId], references: [id], onDelete: Cascade)
+}
+
+model Response {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  formId    Int
+  form      Form   @relation(fields: [formId], references: [id], onDelete: Cascade)
+  answers   Json   // Array of answers mapped to question IDs
+}
+
+enum FormStatus {
+  PUBLISHED
+  UNPUBLISHED
+}
+
+
+
 
 //npm i prisma @prisma/client
 //npx prisma init
