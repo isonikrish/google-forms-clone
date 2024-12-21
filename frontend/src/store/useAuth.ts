@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import {
-  editForm,
+  editForm as editForms,
   loggedUser,
   userLoginData,
   userSignupData,
+  Viewform,
 } from "./types.ts";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -16,14 +17,24 @@ interface AuthState {
   logout: () => void;
   fetchMe: () => void;
   createForm: (title: string) => Promise<AxiosResponse<any> | undefined>;
-  editForm: editForm | null;
+  editForm: editForms | null;
   getEditForm: (id: number | undefined) => void;
-  publishForm: (questions: any, id: number) =>void;
+  publishForm: (questions: any, id: number) => void;
+  userForms: editForms[] | null;
+  getAllForms: () => void;
+  form: Viewform | null;
+  getForm: (id: any) => void;
+  createResponse: (formId: number | undefined, answers: any) => void;
+  getResponses: (id: number) => void;
+  responses: any | null;
 }
 
 export const useAuth = create<AuthState>((set, get) => ({
   user: null,
   editForm: null,
+  userForms: null,
+  form: null,
+  responses: null,
   signup: async (data) => {
     try {
       const res = await axios.post(
@@ -118,7 +129,7 @@ export const useAuth = create<AuthState>((set, get) => ({
     try {
       const res = await axios.put(
         `http://localhost:9294/api/form/publish-form/${id}`,
-        {questions},
+        { questions },
         {
           withCredentials: true,
         }
@@ -128,6 +139,65 @@ export const useAuth = create<AuthState>((set, get) => ({
       }
     } catch (error) {
       console.error("Error in getting form");
+    }
+  },
+  getAllForms: async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:9294/api/form/getAllForms`,
+        {
+          withCredentials: true,
+        }
+      );
+      set({ userForms: res.data });
+    } catch (error) {
+      console.error("Error in getting forms");
+    }
+  },
+
+  getForm: async (id) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:9294/api/form/view-form/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      set({ form: res.data });
+    } catch (error) {
+      console.error("Error in getting form");
+    }
+  },
+  createResponse: async (formId, answers) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:9294/api/form/create-response",
+        { formId, answers },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        toast.success("Responded");
+      }
+    } catch (error) {
+      console.error("Error in creating form");
+    }
+  },
+  ///get-responses/:id
+  getResponses: async (id) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:9294/api/form/get-responses/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status === 200) {
+        set({ responses: res.data });
+      }
+    } catch (error) {
+      console.error("Error in getting responses");
     }
   },
 }));

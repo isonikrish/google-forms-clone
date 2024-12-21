@@ -8,7 +8,8 @@ function FormDisplay() {
   const [tab, setTab] = useState<string>("questions");
   const { id } = useParams<Record<string, string | undefined>>();
   const [questions, setQuestions] = useState<question[]>([]);
-  const { getEditForm, editForm, publishForm } = useAuth();
+  const { getEditForm, editForm, publishForm , getResponses, responses} = useAuth();
+
   const parseId = (): number | null => {
     if (id) {
       const parsedId = parseInt(id, 10);
@@ -34,6 +35,12 @@ function FormDisplay() {
       }
     }
   };
+  useEffect(()=>{
+    getResponses(id)
+  },[id])
+  if(responses){
+    console.log(responses)
+  }
   return (
     <div className="pt-8">
       <div className="flex items-center justify-between px-10">

@@ -5,7 +5,7 @@ function Forms() {
   return (
     <div>
       <CreateForm />
-      <div className="mx-10 my-10">
+      <div className="mx-10 my-10 ">
 
 
         <FormList />

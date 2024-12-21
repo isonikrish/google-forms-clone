@@ -28,3 +28,6 @@ export type editForm = {
     status: string
     questions: question[]
 }
+export type Viewform = {
+    responses: []
+} & editForm
