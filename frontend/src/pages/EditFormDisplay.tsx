@@ -4,11 +4,12 @@ import QuestionsList from "../components/QuestionsList";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../store/useAuth";
 import { question } from "../store/types";
+import Responses from "../components/Responses";
 function FormDisplay() {
   const [tab, setTab] = useState<string>("questions");
   const { id } = useParams<Record<string, string | undefined>>();
   const [questions, setQuestions] = useState<question[]>([]);
-  const { getEditForm, editForm, publishForm , getResponses, responses} = useAuth();
+  const { getEditForm, editForm, publishForm} = useAuth();
 
   const parseId = (): number | null => {
     if (id) {
@@ -35,12 +36,7 @@ function FormDisplay() {
       }
     }
   };
-  useEffect(()=>{
-    getResponses(id)
-  },[id])
-  if(responses){
-    console.log(responses)
-  }
+  
   return (
     <div className="pt-8">
       <div className="flex items-center justify-between px-10">
@@ -89,7 +85,7 @@ function FormDisplay() {
           )
           
         ) : (
-          <h1>Your responses</h1>
+          <Responses />
         )}
       </div>
     </div>

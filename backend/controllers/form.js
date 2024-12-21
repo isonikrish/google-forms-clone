@@ -111,7 +111,13 @@ export async function handleGetResonses(req,res){
     const id = req.params.id;
     if(!id) return res.status(400).json({msg: "No id provided"});
 
-    const result = await prisma.response.findMany({where: {formId:parseInt(id)}});
+    const result = await prisma.response.findMany({
+      where: { formId: parseInt(id) },
+      include: {
+        user: true,
+        form: true,
+      },
+    });
     return res.status(200).json(result)
   } catch (error) {
     return res.status(500).json({ msg: "Internal Server Error" });
