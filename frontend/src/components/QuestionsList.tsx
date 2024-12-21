@@ -1,16 +1,20 @@
 import { FaPlus } from "react-icons/fa";
 import { useState } from "react";
+import { useAuth } from "../store/useAuth";
 import { question } from "../store/types";
-
-function QuestionsList() {
-  const [questions, setQuestions] = useState<question[]>([]);
+interface QuestionsListProps {
+  setQuestions: React.Dispatch<React.SetStateAction<question[]>>;
+  questions: question[];
+}
+function QuestionsList({setQuestions, questions}: QuestionsListProps) {
+  
   const [nextId, setNextId] = useState(1);
 
   function addQuestion() {
     setQuestions([...questions, { id: nextId, question: "" }]);
     setNextId(nextId + 1);
   }
-
+  const {editForm} = useAuth()
   return (
     <div className="flex justify-center bg-gray-100 min-h-screen">
       <div>
@@ -20,11 +24,13 @@ function QuestionsList() {
               <input
                 className="card-title border-b"
                 disabled
-                value={"Untitled Form"}
+                value={editForm?.title}
               />
             </div>
           </div>
           <div>
+            {editForm?.status
+             === "UNPUBLISHED"? 
             <ul className="menu bg-base-200 rounded-box border">
               <li>
                 <a
@@ -35,7 +41,7 @@ function QuestionsList() {
                   <FaPlus />
                 </a>
               </li>
-            </ul>
+            </ul>: ""}
           </div>
         </div>
         <div>

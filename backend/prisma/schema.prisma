@@ -27,17 +27,11 @@ model Form {
   title      String
   userId     Int
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  questions  Question[]
+  questions  Json[]
   responses  Response[]
   status     FormStatus @default(UNPUBLISHED) 
 }
 
-model Question {
-  id        Int    @id @default(autoincrement())
-  question  String
-  formId    Int
-  form      Form   @relation(fields: [formId], references: [id], onDelete: Cascade)
-}
 
 model Response {
   id        Int    @id @default(autoincrement())
@@ -45,7 +39,7 @@ model Response {
   user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   formId    Int
   form      Form   @relation(fields: [formId], references: [id], onDelete: Cascade)
-  answers   Json   // Array of answers mapped to question IDs
+  answers   Json[]  // Array of answers mapped to question IDs
 }
 
 enum FormStatus {

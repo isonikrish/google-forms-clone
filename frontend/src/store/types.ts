@@ -4,7 +4,7 @@ export type setIsLoginType = {
 export type question = {
     id: number
     question: string
-  }
+}
 
 export type loggedUser = {
     id: number,
@@ -20,3 +20,11 @@ export type userLoginData = {
 export type userSignupData = {
     username: string,
 } & userLoginData
+
+export type editForm = {
+    id: number,
+    title: string,
+    userId: number
+    status: string
+    questions: question[]
+}
